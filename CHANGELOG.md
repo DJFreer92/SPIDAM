@@ -1,0 +1,1 @@
+--This file is required, it is meant to summarize the changes with each release of the project
