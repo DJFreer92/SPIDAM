@@ -54,3 +54,12 @@ class View(ttk.Frame):
 
 	def set_file_name(self, file_name):
 		self.file_name_label['text'] = file_name
+
+	def set_audio_length(self, audio_length):
+		self.audio_length_label['text'] += f'{audio_length}s'
+
+	def set_frequency_greatest_amplitude(self, frequency_greatest_amplitude):
+		self.frequency_greatest_amplitude_label['text'] = f'{frequency_greatest_amplitude}Hz'
+
+	def set_rt60_difference(self, rt60_difference):
+		self.rt60_difference_label['text'] = f'{rt60_difference}s'
