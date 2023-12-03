@@ -34,7 +34,7 @@ class View(ttk.Frame):
 
 		#next plot button
 		self.next_plot_button = ttk.Button(self, text = 'Next Plot', command = self.next_plot_button_clicked)
-		self.next_plot_button.grid(row = 6, column = 2, padx = 15)
+		self.next_plot_button.grid(row = 6, column = 2, padx = 15, sticky = tk.E)
 
 		#tests
 		self.set_file_name("test_name.wav")
