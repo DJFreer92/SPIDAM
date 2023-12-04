@@ -15,9 +15,9 @@ class Controller:
 
     def select_audio_file(self):
         filetypes = (
-            ('audio files', ('*.wav','.mp3')),
+            ('audio files', ('*.wav','*.mp3')),
             ('mp3 files', '*.mp3*'),
-            ('wav files', '.wav')
+            ('wav files', '*.wav')
         )
 
         self.audio_file = fd.askopenfilename(
