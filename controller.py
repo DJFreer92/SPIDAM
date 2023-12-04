@@ -1,9 +1,6 @@
 from view import View
 #from model import Model
-import tkinter as tk
-from tkinter import ttk
 from tkinter import filedialog as fd
-from tkinter.messagebox import showinfo
 
 
 #Controller is to be written last
