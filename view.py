@@ -77,14 +77,17 @@ class View(ttk.Frame):
 		self.canvas.draw()
 
 		#placing the canvas on the Tkinter window
-		self.canvas.get_tk_widget().pack()
+		#self.canvas.get_tk_widget().pack()
+
+		#placing the canvas on the Tkinter window
+		self.canvas.get_tk_widget().grid(row = 5, column = 0, sticky = tk.W)
 
 		#creating the Matplotlib toolbar
 		toolbar = NavigationToolbar2Tk(self.canvas, self)
 		toolbar.update()
 
 		#placing the toolbar on the Tkinter window
-		self.canvas.get_tk_widget().pack()
+		#self.canvas.get_tk_widget().pack()
 
-		#position the canvas on the Tkinter window
+		#placing the canvas on the Tkinter window
 		self.canvas.get_tk_widget().grid(row = 5, column = 0, sticky = tk.W)
