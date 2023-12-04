@@ -1,5 +1,5 @@
 from view import View
-#from model import Model
+from model import Model
 from tkinter import filedialog as fd
 
 
