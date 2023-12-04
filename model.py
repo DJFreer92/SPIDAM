@@ -37,10 +37,11 @@ class Model:
         return duration
 
     def compute_high_mid_low_frequency(self):
-        wav_file = wav.open(self.file_path, 'rb')
-        sampling_frequency = wav_file.getframerate()
-        number_of_frames = wav_file.getnframes()
-        raw_data = wav_file.readframes(number_of_frames)
-        wav_file.close()
-        data = np.frombuffer(raw_data, dtype='int16')
+        with wav.open(self.file_path, 'rb') as audio_file:
+            sampling_frequency = audio_file.getframerate()
+            number_of_frames = audio_file.getnframes()
+            raw_data = audio_file.readframes(number_of_frames)
+            audio_file.close()
+            data = np.frombuffer(raw_data, dtype='int16')
         return data, sampling_frequency
+
