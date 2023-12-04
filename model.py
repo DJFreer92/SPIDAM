@@ -14,10 +14,12 @@ class Model:
         if file_path.endswith(".wav"):
             self.file_path = file_path
         else:
-            input_file = file_path
-            output_file = "new.wav"
-            sound = AudioSegment.from_mp3(input_file)
-            self.file_path = sound.export(output_file, format="wav")
+            sound = AudioSegment.from_mp3(file_path)
+            self.file_path = sound.export("NewClap.wav", format="wav")
+
+    def modify_channel(self):
+        sound = AudioSegment.from_wav("NewClap.wav").set_channels(1)
+        self.file_path = sound.export("NewClap.wav", format="wav")
 
     def compute_highest_resonance(self):
         with wav.open(self.file_path, 'r') as audio_file:
@@ -41,5 +43,6 @@ class Model:
             audio_file.close()
             data = np.frombuffer(raw_data, dtype='int16')
         return data, sampling_frequency
+
 
 
