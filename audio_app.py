@@ -1,6 +1,6 @@
 #from model import Model
 from view import View
-#from controller import Controller
+from controller import Controller
 import tkinter as tk
 
 class App(tk.Tk):

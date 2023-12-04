@@ -48,8 +48,7 @@ class View(ttk.Frame):
 
 	def load_audio_button_clicked(self):
 		if self.controller:
-			#self.controller.load_audio_file()
-			pass
+			self.controller.select_audio_file()
 
 	def next_plot_button_clicked(self):
 		if self.controller:
