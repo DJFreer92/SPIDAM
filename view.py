@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 
 class View(ttk.Frame):
 	def __init__(self, parent):
@@ -30,7 +31,8 @@ class View(ttk.Frame):
 		self.rt60_difference_label = ttk.Label(self, text = '')
 		self.rt60_difference_label.grid(row = 4, column = 0, sticky = tk.W)
 
-		#TO DO: Plots here
+		#canvas for plots
+		self.canvas = None
 
 		#next plot button
 		self.next_plot_button = ttk.Button(self, text = 'Next Plot', command = self.next_plot_button_clicked)
@@ -65,5 +67,24 @@ class View(ttk.Frame):
 		self.rt60_difference_label['text'] = f'RT60 difference: {rt60_diff}s'
 
 	def set_plot(self, plot):
-		#TO DO: set the plot
-		pass
+		#if a canvas has been created previously delete it
+		if self.canvas:
+			self.canvas.delete('all')
+
+		#creating the Tkinter canvas
+		#containing the Matplotlib figure
+		self.canvas = FigureCanvasTkAgg(plot, self)
+		self.canvas.draw()
+
+		#placing the canvas on the Tkinter window
+		self.canvas.get_tk_widget().pack()
+
+		#creating the Matplotlib toolbar
+		toolbar = NavigationToolbar2Tk(self.canvas, self)
+		toolbar.update()
+
+		#placing the toolbar on the Tkinter window
+		self.canvas.get_tk_widget().pack()
+
+		#position the canvas on the Tkinter window
+		self.canvas.get_tk_widget().grid(row = 5, column = 0, sticky = tk.W)
