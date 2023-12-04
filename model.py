@@ -6,7 +6,10 @@ import os
 
 
 class Model:
-    def __init__(self, file_path):
+    def __init__(self):
+        self.file_path = ''
+
+    def set_file_path(self, file_path):
         if file_path.endswith(".wav"):
             self.file_path = file_path
         else:
