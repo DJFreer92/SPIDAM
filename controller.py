@@ -6,7 +6,7 @@ from tkinter import filedialog as fd
 #Controller is to be written last
 class Controller:
     def __init__(self, model, view):
-        #self.model = Model
+        #self.model = model
         self.view = view
 
         self.audio_file = ''
