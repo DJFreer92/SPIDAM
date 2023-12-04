@@ -7,19 +7,23 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
 
+        #app title
         self.title('Scientific Python Interactive Data Acoustic Modeling')
 
-        # create a model
+        self.resizable(False, False)
+        #self.geometry('500x200')
+
+        #create a model
         #model = Model()
 
-        # create a view and place it on the root window
+        #create a view and place it on the root window
         view = View(self)
-        view.grid(row=0, column=0, padx=10, pady=10)
+        view.grid(row = 0, column = 0, padx = 10, pady = 10)
 
-        # create a controller
+        #create a controller
         #controller = Controller(model, view)
 
-        # set the controller to view
+        #set the controller to view
         #view.set_controller(controller)
 
 
