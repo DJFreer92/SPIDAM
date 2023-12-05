@@ -12,14 +12,11 @@ class Model:
 
     def set_file_path(self, file_path):
         if file_path.endswith(".wav"):
-            self.file_path = file_path
-        else:
-            sound = AudioSegment.from_mp3(file_path)
+            sound = AudioSegment.from_wav(file_path).set_channels(1)
             self.file_path = sound.export("NewClap.wav", format="wav")
-
-    def modify_channel(self):
-        sound = AudioSegment.from_wav("NewClap.wav").set_channels(1)
-        self.file_path = sound.export("NewClap.wav", format="wav")
+        else:
+            sound = AudioSegment.from_mp3(file_path).set_channels(1)
+            self.file_path = sound.export("NewClap.wav", format="wav")
 
     def compute_highest_resonance(self):
         with wav.open(self.file_path, 'r') as audio_file:
