@@ -1,6 +1,7 @@
 import numpy as np
 import wave as wav
 import scipy as sci
+from scipy.io.wavfile import read
 from pydub import AudioSegment
 import matplotlib.pyplot as plt
 import os
@@ -12,11 +13,15 @@ class Model:
 
     def set_file_path(self, file_path):
         if file_path.endswith(".wav"):
-            sound = AudioSegment.from_wav(file_path).set_channels(1)
+            sound = AudioSegment.from_wav(file_path)
             self.file_path = sound.export("NewClap.wav", format="wav")
         else:
-            sound = AudioSegment.from_mp3(file_path).set_channels(1)
+            sound = AudioSegment.from_mp3(file_path)
             self.file_path = sound.export("NewClap.wav", format="wav")
+
+    def set_single_channel(self):
+        sound = AudioSegment.from_wav(self.file_path).set_channels(1)
+        self.file_path = sound.export("NewClap.wav", format="wav")
 
     def compute_highest_resonance(self):
         with wav.open(self.file_path, 'r') as audio_file:
@@ -31,6 +36,16 @@ class Model:
             rate = audio_file.getframerate()
             duration = frames / float(rate)
         return duration
+
+    @staticmethod
+    def plot_waveform(self):
+        input_data = read(self.file_path)
+        audio = input_data[1]
+        plt.plot(audio[0:1024])
+        plt.ylabel("Amplitude")
+        plt.xlabel("Time")
+        plt.title(self.file_path.split("/")[-1])
+        plt.show()
 
     def compute_high_mid_low_frequency(self):
         with wav.open(self.file_path, 'rb') as audio_file:
