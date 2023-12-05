@@ -11,8 +11,6 @@ class Controller:
 
         self.audio_file = ''
 
-    #def Start():
-
     def select_audio_file(self):
         filetypes = (
             ('audio files', ('*.wav','*.mp3')),
@@ -24,9 +22,7 @@ class Controller:
             title = 'Open a file',
             initialdir = '/',
             filetypes = filetypes
-        )
+        ) or ''
 
-        self.model.set_file_path(self.audio_file)
-
-
-#Start()
+        if self.audio_file:
+            self.model.set_file_path(self.audio_file)
