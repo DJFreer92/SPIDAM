@@ -29,8 +29,6 @@ class Controller:
             self.model.set_file_path(self.audio_file)
             self.view.set_file_name(self.audio_file)  # Update file name in the view
             self.view.set_statistics(length=0, freq_great_amp=0, rt60_diff=0)  # Clear previous statistics
-            self.view.set_plot(None)  # Clear previous plot
-
     def analyze_and_display(self):
         file_path = self.audio_file
 
