@@ -7,7 +7,6 @@ class Controller:
     def __init__(self, model, view):
         self.model = model
         self.view = view
-
         self.audio_file = ''
     #the specific files that can be chosen to analyze
     def select_audio_file(self):
@@ -33,7 +32,7 @@ class Controller:
             self.view.set_plot(None)  # Clear previous plot
 
     def analyze_and_display(self):
-        file_path = self.file_path_entry.get()
+        file_path = self.audio_file
 
         if file_path:
             self.model.set_file_path(file_path)
