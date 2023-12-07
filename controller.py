@@ -21,7 +21,7 @@ class Controller:
             title = 'Open a file',
             initialdir = '/',
             filetypes = filetypes
-        ) or ''
+        )
 
         if self.audio_file:
             self.model.set_file_path(self.audio_file)

@@ -1,11 +1,8 @@
 import numpy as np
 import wave as wav
 import scipy as sci
-from scipy.io.wavfile import read
 from pydub import AudioSegment
 import matplotlib.pyplot as plt
-import os
-
 
 class Model:
     def __init__(self):
@@ -24,37 +21,48 @@ class Model:
         self.file_path = sound.export("NewClap.wav", format="wav")
 
     def compute_highest_resonance(self):
-        with wav.open(self.file_path, 'r') as audio_file:
-            signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
-            sample_rate = audio_file.getframerate()
-            frequencies, power = sci.signal.fftconvolve(signal, signal)
+        audio_file = wav.open(self.file_path, 'r')
+        signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        frequencies, power = sci.signal.fftconvolve(signal, signal)
+        audio_file.close()
         return frequencies[np.argmax(power)]
 
     def display_time_value(self):
-        with wav.open(self.file_path, 'r') as audio_file:
-            frames = audio_file.getnframes()
-            rate = audio_file.getframerate()
-            duration = frames / float(rate)
+        audio_file = wav.open(self.file_path, 'r')
+        frames = audio_file.getnframes()
+        rate = audio_file.getframerate()
+        duration = frames / float(rate)
+        audio_file.close()
         return duration
 
-    @staticmethod
-    def plot_waveform(self):
-        input_data = read(self.file_path)
-        audio = input_data[1]
-        plt.plot(audio[0:1024])
-        plt.ylabel("Amplitude")
-        plt.xlabel("Time")
-        plt.title(self.file_path.split("/")[-1])
+    def waveform(self):
+        audio_file = wav.open(self.file_path, 'rb')
+        signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        plt.figure(figsize=(10, 6))
+        plt.plot(signal)
+        plt.xlabel('Time')
+        plt.ylabel('Amplitude')
+        plt.title('Waveform')
         plt.show()
 
-    def compute_high_mid_low_frequency(self):
-        with wav.open(self.file_path, 'rb') as audio_file:
-            sampling_frequency = audio_file.getframerate()
-            number_of_frames = audio_file.getnframes()
-            raw_data = audio_file.readframes(number_of_frames)
-            audio_file.close()
-            data = np.frombuffer(raw_data, dtype='int16')
-        return data, sampling_frequency
+    def high_mid_low(self):
+        audio_file = wav.open(self.file_path, 'rb')
+        signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        frequencies, power = sci.signal.welch(signal)
+        high_cut = int(len(power) * 0.4)
+        mid_cut = int(len(power) * 0.6)
+        high_power = power[:high_cut]
+        mid_power = power[high_cut:mid_cut]
+        low_power = power[mid_cut:]
+        plt.figure(figsize=(10, 6))
+        time = np.arange(0, len(power)) * (1 / audio_file.getframerate())  # time array for x axis
+        plt.plot(high_power)
+        plt.plot(mid_power)
+        plt.plot(low_power)
+        plt.ylabel('Power')
+        plt.title('High, Mid, and Low Frequencies')
+        plt.show()
+
 
 
 

@@ -24,8 +24,8 @@ class View(ttk.Frame):
 		self.audio_length_label.grid(row = 2, column = 0, sticky = tk.W)
 
 		#frequency of greatest amplitude label
-		self.frequency_greatest_amplitude_label = ttk.Label(self, text = '')
-		self.frequency_greatest_amplitude_label.grid(row = 3, column = 0, sticky = tk.W)
+		self.freq_great_amp_label = ttk.Label(self, text = '')
+		self.freq_great_amp_label.grid(row = 3, column = 0, sticky = tk.W)
 
 		#RT60 difference label
 		self.rt60_difference_label = ttk.Label(self, text = '')
@@ -39,7 +39,7 @@ class View(ttk.Frame):
 		self.next_plot_button.grid(row = 6, column = 2, padx = 15, sticky = tk.E)
 
 		#tests
-		self.set_file_name("test_name.wav")
+		self.set_file_name('test_name.wav')
 		self.set_statistics(length = 20, freq_great_amp = 12, rt60_diff = 5)
 
 		#set the controller
@@ -63,7 +63,7 @@ class View(ttk.Frame):
 	def set_statistics(self, length, freq_great_amp, rt60_diff):
 		self.statistics_label['text'] = 'Audio Statistics:'
 		self.audio_length_label['text'] = f'Audio length: {length}s'
-		self.frequency_greatest_amplitude_label['text'] = f'Frequency of greatest amplitude: {freq_great_amp}Hz'
+		self.freq_great_amp_label['text'] = f'Frequency of greatest amplitude: {freq_great_amp}Hz'
 		self.rt60_difference_label['text'] = f'RT60 difference: {rt60_diff}s'
 
 	def set_plot(self, plot):
