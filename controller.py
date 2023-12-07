@@ -8,6 +8,7 @@ class Controller:
         self.model = model
         self.view = view
         self.audio_file = ''
+
     #the specific files that can be chosen to analyze
     def select_audio_file(self):
         filetypes = (
@@ -24,12 +25,7 @@ class Controller:
 
         if self.audio_file:
             self.model.set_file_path(self.audio_file)
-
-        if self.audio_file:
-            self.model.set_file_path(self.audio_file)
-            self.view.set_file_name(self.audio_file)  # Update file name in the view
-            self.view.set_statistics(length=0, freq_great_amp=0, rt60_diff=0)  # Clear previous statistics
-            self.view.set_plot(None)  # Clear previous plot
+            self.analyze_and_display()
 
     def analyze_and_display(self):
         file_path = self.audio_file
@@ -43,5 +39,5 @@ class Controller:
 
             # Update the GUI in View
             self.view.set_file_name(file_path)
-            self.view.set_statistics(length=duration, freq_great_amp=highest_resonance,rt60_diff=0)  # Replace 0 with actual RT60 difference
+            self.view.set_statistics(length=duration, freq_great_amp=highest_resonance, rt60_diff=0)  # Replace 0 with actual RT60 difference
             self.view.set_plot(self.model.waveform())  # Display waveform
