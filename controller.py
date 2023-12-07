@@ -45,15 +45,3 @@ class Controller:
             self.view.set_file_name(file_path)
             self.view.set_statistics(length=duration, freq_great_amp=highest_resonance,rt60_diff=0)  # Replace 0 with actual RT60 difference
             self.view.set_plot(self.model.waveform())  # Display waveform
-
-
-
-def main():
-    root = tk.Tk()
-    model_instance = Model()
-    view_instance = View(root)
-    controller_instance = Controller(root, model_instance, view_instance)
-    root.mainloop()
-
-if __name__ == "__main__":
-    main()
