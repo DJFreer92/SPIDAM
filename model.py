@@ -30,8 +30,8 @@ class Model:
         self.set_values(sound)
 
     def compute_highest_resonance(self):
-        audio_file = wav.open(self.file_path, 'rb')
-        signal_data = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        with wav.open(self.file_path, 'rb') as audio_file:
+            signal_data = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
         frequencies, power = sci.signal.welch(signal_data, fs=audio_file.getframerate(), nperseg=1024)
         audio_file.close()
         highest_resonance_index = np.argmax(power)
@@ -40,18 +40,19 @@ class Model:
         return highest_resonance_frequency
 
     def display_time_value(self):
-        audio_file_b = wav.open(self.file_path, 'rb')
-        frames = audio_file_b.getnframes()
-        rate = audio_file_b.getframerate()
-        audio_file_b.close()
+        with wav.open(self.file_path, 'rb') as audio_file:
+            signal_data = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        frames = audio_file.getnframes()
+        rate = audio_file.getframerate()
+        audio_file.close()
         duration = frames / float(rate)
         print('%.3f' % duration)
         return duration
 
     def waveform(self):
-        audio_file_c = wav.open(self.file_path, 'rb')
-        signal = np.frombuffer(audio_file_c.readframes(-1), dtype=np.int16)
-        audio_file_c.close()
+        with wav.open(self.file_path, 'rb') as audio_file:
+            signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        audio_file.close()
         plt.figure(figsize=(10, 6))
         plt.plot(signal)
         plt.xlabel('Time')
@@ -60,9 +61,10 @@ class Model:
         plt.show()
 
     def high_mid_low(self):
-        audio_file_d = wav.open(self.file_path, 'rb')
-        signal = np.frombuffer(audio_file_d.readframes(-1), dtype=np.int16)
-        audio_file_d.close()
+        with wav.open(self.file_path, 'rb') as audio_file:
+            signal_data = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        audio_file.close()
         frequencies, power = sci.signal.welch(signal)
         high_cut = int(len(power) * 0.4)
         mid_cut = int(len(power) * 0.6)
@@ -121,6 +123,8 @@ class Model:
         plt.show()
         print('%.3f' % abs(rt60))
         return abs(rt60)
+
+
 
 
 
