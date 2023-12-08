@@ -53,12 +53,11 @@ class Model:
     def waveform(self):
         with wav.open(self.file_path, 'rb') as audio_file:
             signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
-        plt.figure(figsize=(10, 6))
-        plt.plot(signal)
-        plt.xlabel('Time')
-        plt.ylabel('Amplitude')
-        plt.title('Waveform')
-        plt.show()
+        # plt.figure(figsize=(10, 6))
+        # plot = plt.plot(signal)
+        # plt.xlabel('Time')
+        # plt.ylabel('Amplitude')
+        # plt.title('Waveform')
         self.set_file_path('NewClap.wav')
         return signal
 
@@ -68,21 +67,21 @@ class Model:
         frequencies, power = sci.signal.welch(signal)
         high_cut = int(len(power) * 0.4)
         mid_cut = int(len(power) * 0.6)
-        high_power = power[:high_cut]
-        mid_power = power[high_cut:mid_cut]
-        low_power = power[mid_cut:]
+        high_wave = signal[:high_cut]
+        mid_wave = signal[high_cut:mid_cut]
+        low_wave = signal[mid_cut:]
 
-        plt.figure(figsize=(10, 6))
-        plt.plot(high_power, 'g')
-        plt.plot(mid_power, 'y')
-        plt.plot(low_power, 'r')
+        # plt.figure(figsize=(10, 6))
+        # plt.plot(high_wave, 'g')
+        # plt.plot(mid_wave, 'y')
+        # plt.plot(low_wave, 'r')
 
-        plt.ylabel('Power')
-        plt.xlabel('Time')
-        plt.title('High, Mid, and Low Frequencies')
-        plt.show()
+        # plt.ylabel('Amplitude')
+        # plt.xlabel('Time')
+        # plt.title('High, Mid, and Low Waveforms')
+        # plt.show()
         self.set_file_path('NewClap.wav')
-        return high_power, mid_power, low_power
+        return high_wave, mid_wave, low_wave
 
     def find_target_frequency(self, freqs):
         for x in freqs:
@@ -104,29 +103,28 @@ class Model:
 
     def plot_rt60(self):
         data_in_db = self.frequency_check()
-        plt.figure()
-        plt.plot(self.t, data_in_db)
-        plt.xlabel('Time')
-        plt.ylabel('Power')
+        # plt.figure()
+        # plt.plot(self.t, data_in_db)
+        # plt.xlabel('Time')
+        # plt.ylabel('Power')
         index_of_max = np.argmax(data_in_db)
         value_of_max = data_in_db[index_of_max]
-        plt.plot(self.t[index_of_max], data_in_db[index_of_max], 'go')
+        # plt.plot(self.t[index_of_max], data_in_db[index_of_max], 'go')
         sliced_array = data_in_db[index_of_max:]
         value_of_max_less_5 = value_of_max - 5
         value_of_max_less_5 = self.find_nearest_value(sliced_array, value_of_max_less_5)
         index_of_max_less_5 = np.where(data_in_db == value_of_max_less_5)
-        plt.plot(self.t[index_of_max_less_5], data_in_db[index_of_max_less_5], 'yo')
+        # plt.plot(self.t[index_of_max_less_5], data_in_db[index_of_max_less_5], 'yo')
         value_of_max_less_25 = value_of_max - 25
         value_of_max_less_25 = self.find_nearest_value(sliced_array, value_of_max_less_25)
         index_of_max_less_25 = np.where(data_in_db == value_of_max_less_25)
-        plt.plot(self.t[index_of_max_less_25], data_in_db[index_of_max_less_25], 'ro')
+        # plt.plot(self.t[index_of_max_less_25], data_in_db[index_of_max_less_25], 'ro')
         rt20 = (self.t[index_of_max_less_5] - self.t[index_of_max_less_25])[0]
         rt60 = rt20*3
-        plt.show()
+        # plt.show()
         print('%.3f' % abs(rt60))
         self.set_file_path('NewClap.wav')
-        return abs(rt60)
-
+        return abs(rt60), self.t, data_in_db, index_of_max, index_of_max_less_5, index_of_max_less_25
 
 
 
