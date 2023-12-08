@@ -29,6 +29,7 @@ class Model:
         sound = AudioSegment.from_wav(self.file_path).set_channels(1)
         self.set_values(sound)
 
+
     def compute_highest_resonance(self):
         with wav.open(self.file_path, 'rb') as audio_file:
             signal_data = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
@@ -37,6 +38,7 @@ class Model:
         highest_resonance_index = np.argmax(power)
         highest_resonance_frequency = frequencies[highest_resonance_index]
         print('%.3f' % highest_resonance_frequency)
+        self.set_file_path('NewClap.wav')
         return highest_resonance_frequency
 
     def display_time_value(self):
@@ -45,6 +47,7 @@ class Model:
             rate = audio_file.getframerate()
         duration = frames / float(rate)
         print('%.3f' % duration)
+        self.set_file_path('NewClap.wav')
         return duration
 
     def waveform(self):
@@ -56,6 +59,7 @@ class Model:
         plt.ylabel('Amplitude')
         plt.title('Waveform')
         plt.show()
+        self.set_file_path('NewClap.wav')
         return signal
 
     def high_mid_low(self):
@@ -77,7 +81,8 @@ class Model:
         plt.xlabel('Time')
         plt.title('High, Mid, and Low Frequencies')
         plt.show()
-        return high_power,mid_power,low_power
+        self.set_file_path('NewClap.wav')
+        return high_power, mid_power, low_power
 
     def find_target_frequency(self, freqs):
         for x in freqs:
@@ -119,6 +124,7 @@ class Model:
         rt60 = rt20*3
         plt.show()
         print('%.3f' % abs(rt60))
+        self.set_file_path('NewClap.wav')
         return abs(rt60)
 
 
