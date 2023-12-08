@@ -1,10 +1,3 @@
-import numpy as np
-import wave as wav
-import scipy as sci
-from pydub import AudioSegment
-import matplotlib.pyplot as plt
-
-
 class Model:
 
     def __init__(self):
@@ -56,6 +49,7 @@ class Model:
         plt.ylabel('Amplitude')
         plt.title('Waveform')
         plt.show()
+        return signal
 
     def high_mid_low(self):
         with wav.open(self.file_path, 'r') as audio_file:
@@ -76,6 +70,7 @@ class Model:
         plt.xlabel('Time')
         plt.title('High, Mid, and Low Frequencies')
         plt.show()
+        return high_power,mid_power,low_power
 
     def find_target_frequency(self, freqs):
         for x in freqs:
@@ -118,3 +113,8 @@ class Model:
         plt.show()
         print('%.3f' % abs(rt60))
         return abs(rt60)
+
+
+
+
+
