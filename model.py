@@ -1,3 +1,10 @@
+import numpy as np
+import wave as wav
+import scipy as sci
+from pydub import AudioSegment
+import matplotlib.pyplot as plt
+
+
 class Model:
 
     def __init__(self):
