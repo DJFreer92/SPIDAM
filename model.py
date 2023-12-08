@@ -41,10 +41,8 @@ class Model:
 
     def display_time_value(self):
         with wav.open(self.file_path, 'rb') as audio_file:
-            signal_data = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
-        frames = audio_file.getnframes()
-        rate = audio_file.getframerate()
-        audio_file.close()
+            frames = audio_file.getnframes()
+            rate = audio_file.getframerate()
         duration = frames / float(rate)
         print('%.3f' % duration)
         return duration
@@ -52,7 +50,6 @@ class Model:
     def waveform(self):
         with wav.open(self.file_path, 'rb') as audio_file:
             signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
-        audio_file.close()
         plt.figure(figsize=(10, 6))
         plt.plot(signal)
         plt.xlabel('Time')
@@ -61,10 +58,8 @@ class Model:
         plt.show()
 
     def high_mid_low(self):
-        with wav.open(self.file_path, 'rb') as audio_file:
-            signal_data = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
-        signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
-        audio_file.close()
+        with wav.open(self.file_path, 'r') as audio_file:
+            signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
         frequencies, power = sci.signal.welch(signal)
         high_cut = int(len(power) * 0.4)
         mid_cut = int(len(power) * 0.6)
@@ -73,9 +68,9 @@ class Model:
         low_power = power[mid_cut:]
 
         plt.figure(figsize=(10, 6))
-        plt.plot(high_power, label='High Frequency')
-        plt.plot(mid_power, label='Mid Frequency')
-        plt.plot(low_power, label='Low Frequency')
+        plt.plot(high_power, 'g')
+        plt.plot(mid_power, 'y')
+        plt.plot(low_power, 'r')
 
         plt.ylabel('Power')
         plt.xlabel('Time')
@@ -123,14 +118,3 @@ class Model:
         plt.show()
         print('%.3f' % abs(rt60))
         return abs(rt60)
-
-
-
-
-
-
-
-
-
-
-
