@@ -206,6 +206,7 @@ class Model:
         plt.plot(self.t, data_in_db)
         plt.xlabel('Time')
         plt.ylabel('Power')
+        plt.title('RT60 Graph')
         index_of_max = np.argmax(data_in_db)
         value_of_max = data_in_db[index_of_max]
         plt.plot(self.t[index_of_max], data_in_db[index_of_max], 'go')
