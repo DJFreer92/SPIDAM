@@ -9,6 +9,7 @@ class Controller:
         self.model = model
         self.view = view
         self.audio_file = ''
+        self.plot_methods = None
 
     #the specific files that can be chosen to analyze
     def select_audio_file(self):
@@ -36,25 +37,17 @@ class Controller:
 
             # Perform analysis using the Model
             highest_resonance = self.model.compute_highest_resonance()
-            duration = self.model.display_time_value()
+            duration = round(self.model.display_time_value(), 2)
 
             # Update the GUI in View
             self.view.set_file_name(file_path)
             self.view.set_statistics(length=duration, freq_great_amp=highest_resonance, rt60_diff=0)  # Replace 0 with actual RT60 difference
+            self.reset_plot_methods()
+            self.next_plot()
+
+    def reset_plot_methods(self):
+        self.plot_methods = [self.model.waveform, self.model.low, self.model.mid, self.model.high, self.model.plot_rt60]
 
     def next_plot(self):
-        Controller.plt_num += 1
-        if Controller.plt_num == 1:
-            self.model.waveform()
-        elif Controller.plt_num == 2:
-            self.model.low()
-        elif Controller.plt_num == 3:
-            self.model.mid()
-        elif Controller.plt_num == 4:
-            self.model.high()
-        elif Controller.plt_num == 5:
-            self.model.plot_rt60()
-        # elif Controller.plt_num == 6:
-        #     Model.suprise()
-        else:
-            return
+        self.plot_methods[0]()
+        self.plot_methods.append(self.plot_methods.pop(0))
