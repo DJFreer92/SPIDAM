@@ -12,7 +12,7 @@ class Model:
             = '', '', '', '', '', '', ''
 
     def set_values(self, sound):
-        self.file_path = sound.export("NewClap.wav", format="wav")
+        self.file_path = sound.export("Clap.wav", format="wav")
         self.sample_rate, self.data = sci.io.wavfile.read(self.file_path)
         self.spectrum, self.freqs, self.t, self.im = plt.specgram(self.data, Fs=self.sample_rate, NFFT=1024,
                                                                   cmap=plt.get_cmap('autumn_r'))
@@ -38,7 +38,7 @@ class Model:
         highest_resonance_index = np.argmax(power)
         highest_resonance_frequency = frequencies[highest_resonance_index]
         print('%.3f' % highest_resonance_frequency)
-        self.set_file_path('NewClap.wav')
+        self.set_file_path('Clap.wav')
         return highest_resonance_frequency
 
     def display_time_value(self):
@@ -47,7 +47,7 @@ class Model:
             rate = audio_file.getframerate()
         duration = frames / float(rate)
         print('%.3f' % duration)
-        self.set_file_path('NewClap.wav')
+        self.set_file_path('Clap.wav')
         return duration
 
     def waveform(self):
@@ -58,15 +58,15 @@ class Model:
         # plt.xlabel('Time')
         # plt.ylabel('Amplitude')
         # plt.title('Waveform')
-        self.set_file_path('NewClap.wav')
+        self.set_file_path('Clap.wav')
         return signal
 
     def high_mid_low(self):
         with wav.open(self.file_path, 'r') as audio_file:
             signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
         frequencies, power = sci.signal.welch(signal)
-        high_cut = int(len(power) * 0.4)
-        mid_cut = int(len(power) * 0.6)
+        high_cut = int(len(signal) * 0.4)
+        mid_cut = int(len(signal) * 0.6)
         high_wave = signal[:high_cut]
         mid_wave = signal[high_cut:mid_cut]
         low_wave = signal[mid_cut:]
@@ -80,7 +80,7 @@ class Model:
         # plt.xlabel('Time')
         # plt.title('High, Mid, and Low Waveforms')
         # plt.show()
-        self.set_file_path('NewClap.wav')
+        self.set_file_path('Clap.wav')
         return high_wave, mid_wave, low_wave
 
     def find_target_frequency(self, freqs):
@@ -123,8 +123,9 @@ class Model:
         rt60 = rt20*3
         # plt.show()
         print('%.3f' % abs(rt60))
-        self.set_file_path('NewClap.wav')
+        self.set_file_path('Clap.wav')
         return abs(rt60), self.t, data_in_db, index_of_max, index_of_max_less_5, index_of_max_less_25
+
 
 
 
