@@ -36,17 +36,22 @@ class Controller:
             self.model.set_file_path(file_path)
 
             # Perform analysis using the Model
-            highest_resonance = self.model.compute_highest_resonance()
             duration = round(self.model.display_time_value(), 2)
+            highest_resonance = self.model.compute_highest_resonance()
+            rt60_diff = self.model.rt60_diff()
 
             # Update the GUI in View
             self.view.set_file_name(file_path)
-            self.view.set_statistics(length=duration, freq_great_amp=highest_resonance, rt60_diff=0)  # Replace 0 with actual RT60 difference
+            self.view.set_statistics(
+                length = duration,
+	            freq_great_amp = highest_resonance,
+                rt60_diff = rt60_diff
+            )
             self.reset_plot_methods()
             self.next_plot()
 
     def reset_plot_methods(self):
-        self.plot_methods = [self.model.waveform, self.model.low, self.model.mid, self.model.high, self.model.plot_rt60]
+        self.plot_methods = [self.model.waveform, self.model.low, self.model.mid, self.model.high, self.model.plot_rt60, self.model.useful_waveform]
 
     def next_plot(self):
         self.plot_methods[0]()
