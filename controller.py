@@ -49,10 +49,10 @@ class Controller:
             )
             self.reset_plot_methods()
             self.next_plot()
-
+    #specifys which plot to open after pressing a button in the gui
     def reset_plot_methods(self):
         self.plot_methods = [self.model.waveform, self.model.low, self.model.mid, self.model.high, self.model.plot_rt60, self.model.useful_waveform]
-
+    #filters through the plots in reset_plot_methods
     def next_plot(self):
         self.plot_methods[0]()
         self.plot_methods.append(self.plot_methods.pop(0))
