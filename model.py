@@ -5,7 +5,6 @@ from pydub import AudioSegment
 import matplotlib.pyplot as plt
 
 class Model:
-
     def __init__(self):
         self.file_path, self.sample_rate, self.data, self.spectrum, self.freqs, self.t, self.im \
             = '', '', '', '', '', '', ''
@@ -28,6 +27,7 @@ class Model:
     def set_single_channel(self):
         sound = AudioSegment.from_wav(self.file_path).set_channels(1)
         self.set_values(sound)
+
 
     def compute_highest_resonance(self):
         with wav.open(self.file_path, 'rb') as audio_file:
@@ -57,6 +57,20 @@ class Model:
         plt.xlabel('Time')
         plt.ylabel('Amplitude')
         plt.title('Waveform')
+        plt.show()
+        self.set_file_path('Clap.wav')
+        return signal
+
+    def useful_waveform(self):
+        with wav.open(self.file_path, 'rb') as audio_file:
+            signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        plt.figure(figsize=(10, 6))
+        useful_cut = int(len(signal) * 0.1)
+        useful_wave = signal[:useful_cut]
+        plt.plot(useful_wave)
+        plt.xlabel('Time')
+        plt.ylabel('Amplitude')
+        plt.title('"Useful" Waveform')
         plt.show()
         self.set_file_path('Clap.wav')
         return signal
@@ -143,6 +157,22 @@ class Model:
         rt20 = (self.t[index_of_max_less_5] - self.t[index_of_max_less_25])[0]
         rt60 = rt20*3
         plt.show()
-        print('%.3f' % abs(rt60))
         self.set_file_path('Clap.wav')
-        return abs(rt60), self.t, data_in_db, index_of_max, index_of_max_less_5, index_of_max_less_25
+        return abs(rt60)
+
+    def rt60_diff(self):
+        data_in_db = self.frequency_check()
+        index_of_max = np.argmax(data_in_db)
+        value_of_max = data_in_db[index_of_max]
+        sliced_array = data_in_db[index_of_max:]
+        value_of_max_less_5 = value_of_max - 5
+        value_of_max_less_5 = self.find_nearest_value(sliced_array, value_of_max_less_5)
+        index_of_max_less_5 = np.where(data_in_db == value_of_max_less_5)
+        value_of_max_less_25 = value_of_max - 25
+        value_of_max_less_25 = self.find_nearest_value(sliced_array, value_of_max_less_25)
+        index_of_max_less_25 = np.where(data_in_db == value_of_max_less_25)
+        rt20 = (self.t[index_of_max_less_5] - self.t[index_of_max_less_25])[0]
+        rt60 = rt20*3
+        print('%.3f' % abs(rt60))
+        return '%.3f' % (abs(rt60) - 0.5)
+
