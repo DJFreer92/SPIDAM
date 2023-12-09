@@ -4,6 +4,7 @@ from tkinter import filedialog as fd
 import tkinter as tk
 
 class Controller:
+    plt_num = 0
     def __init__(self, model, view):
         self.model = model
         self.view = view
@@ -41,3 +42,20 @@ class Controller:
             self.view.set_file_name(file_path)
             self.view.set_statistics(length=duration, freq_great_amp=highest_resonance, rt60_diff=0)  # Replace 0 with actual RT60 difference
             self.view.set_plot(self.model.waveform())  # Display waveform
+
+    def next_plot(self):
+        Controller.plt_num += 1
+        if Controller.plt_num == 1:
+            Model.waveform()
+        elif Controller.plt_num == 2:
+            Model.low()
+        elif Controller.plt_num == 3:
+            Model.mid()
+        elif Controller.plt_num == 4:
+            Model.high()
+        elif Controller.plt_num == 5:
+            Model.plot_rt60()
+        # elif Controller.plt_num == 6:
+        #     Model.suprise()
+        else:
+            return
