@@ -61,26 +61,48 @@ class Model:
         self.set_file_path('Clap.wav')
         return signal
 
-    def high_mid_low(self):
+    def high(self):
+        with wav.open(self.file_path, 'r') as audio_file:
+            signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        high_cut = int(len(signal) * 0.4)
+        high_wave = signal[:high_cut]
+        plt.figure(figsize=(10, 6))
+        plt.plot(high_wave, 'g')
+        plt.ylabel('Amplitude')
+        plt.xlabel('Time')
+        plt.title('High Waveform')
+        plt.show()
+        self.set_file_path('Clap.wav')
+        return high_wave
+
+    def mid(self):
         with wav.open(self.file_path, 'r') as audio_file:
             signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
         high_cut = int(len(signal) * 0.4)
         mid_cut = int(len(signal) * 0.6)
-        high_wave = signal[:high_cut]
         mid_wave = signal[high_cut:mid_cut]
-        low_wave = signal[mid_cut:]
-
         plt.figure(figsize=(10, 6))
-        plt.plot(high_wave, 'g')
         plt.plot(mid_wave, 'y')
-        plt.plot(low_wave, 'r')
-
         plt.ylabel('Amplitude')
         plt.xlabel('Time')
-        plt.title('High, Mid, and Low Waveforms')
+        plt.title('Mid Waveform')
         plt.show()
         self.set_file_path('Clap.wav')
-        return high_wave, mid_wave, low_wave
+        return mid_wave
+
+    def low(self):
+        with wav.open(self.file_path, 'r') as audio_file:
+            signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
+        mid_cut = int(len(signal) * 0.6)
+        low_wave = signal[mid_cut:]
+        plt.figure(figsize=(10, 6))
+        plt.plot(low_wave, 'r')
+        plt.ylabel('Amplitude')
+        plt.xlabel('Time')
+        plt.title('Low Waveform')
+        plt.show()
+        self.set_file_path('Clap.wav')
+        return low_wave
 
     def find_target_frequency(self, freqs):
         for x in freqs:
