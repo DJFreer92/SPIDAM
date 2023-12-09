@@ -4,7 +4,6 @@ import scipy as sci
 from pydub import AudioSegment
 import matplotlib.pyplot as plt
 
-
 class Model:
 
     def __init__(self):
@@ -16,19 +15,19 @@ class Model:
         self.sample_rate, self.data = sci.io.wavfile.read(self.file_path)
         self.spectrum, self.freqs, self.t, self.im = plt.specgram(self.data, Fs=self.sample_rate, NFFT=1024,
                                                                   cmap=plt.get_cmap('autumn_r'))
+        plt.close()
 
     def set_file_path(self, file_path):
         if file_path.endswith(".wav"):
             sound = AudioSegment.from_wav(file_path)
             self.set_values(sound)
-        else:
+        elif file_path.endswith(".mp3"):
             sound = AudioSegment.from_mp3(file_path)
             self.set_values(sound)
 
     def set_single_channel(self):
         sound = AudioSegment.from_wav(self.file_path).set_channels(1)
         self.set_values(sound)
-
 
     def compute_highest_resonance(self):
         with wav.open(self.file_path, 'rb') as audio_file:
@@ -53,33 +52,33 @@ class Model:
     def waveform(self):
         with wav.open(self.file_path, 'rb') as audio_file:
             signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
-        # plt.figure(figsize=(10, 6))
-        # plot = plt.plot(signal)
-        # plt.xlabel('Time')
-        # plt.ylabel('Amplitude')
-        # plt.title('Waveform')
+        plt.figure(figsize=(10, 6))
+        plt.plot(signal)
+        plt.xlabel('Time')
+        plt.ylabel('Amplitude')
+        plt.title('Waveform')
+        plt.show()
         self.set_file_path('Clap.wav')
         return signal
 
     def high_mid_low(self):
         with wav.open(self.file_path, 'r') as audio_file:
             signal = np.frombuffer(audio_file.readframes(-1), dtype=np.int16)
-        frequencies, power = sci.signal.welch(signal)
         high_cut = int(len(signal) * 0.4)
         mid_cut = int(len(signal) * 0.6)
         high_wave = signal[:high_cut]
         mid_wave = signal[high_cut:mid_cut]
         low_wave = signal[mid_cut:]
 
-        # plt.figure(figsize=(10, 6))
-        # plt.plot(high_wave, 'g')
-        # plt.plot(mid_wave, 'y')
-        # plt.plot(low_wave, 'r')
+        plt.figure(figsize=(10, 6))
+        plt.plot(high_wave, 'g')
+        plt.plot(mid_wave, 'y')
+        plt.plot(low_wave, 'r')
 
-        # plt.ylabel('Amplitude')
-        # plt.xlabel('Time')
-        # plt.title('High, Mid, and Low Waveforms')
-        # plt.show()
+        plt.ylabel('Amplitude')
+        plt.xlabel('Time')
+        plt.title('High, Mid, and Low Waveforms')
+        plt.show()
         self.set_file_path('Clap.wav')
         return high_wave, mid_wave, low_wave
 
@@ -103,30 +102,25 @@ class Model:
 
     def plot_rt60(self):
         data_in_db = self.frequency_check()
-        # plt.figure()
-        # plt.plot(self.t, data_in_db)
-        # plt.xlabel('Time')
-        # plt.ylabel('Power')
+        plt.figure()
+        plt.plot(self.t, data_in_db)
+        plt.xlabel('Time')
+        plt.ylabel('Power')
         index_of_max = np.argmax(data_in_db)
         value_of_max = data_in_db[index_of_max]
-        # plt.plot(self.t[index_of_max], data_in_db[index_of_max], 'go')
+        plt.plot(self.t[index_of_max], data_in_db[index_of_max], 'go')
         sliced_array = data_in_db[index_of_max:]
         value_of_max_less_5 = value_of_max - 5
         value_of_max_less_5 = self.find_nearest_value(sliced_array, value_of_max_less_5)
         index_of_max_less_5 = np.where(data_in_db == value_of_max_less_5)
-        # plt.plot(self.t[index_of_max_less_5], data_in_db[index_of_max_less_5], 'yo')
+        plt.plot(self.t[index_of_max_less_5], data_in_db[index_of_max_less_5], 'yo')
         value_of_max_less_25 = value_of_max - 25
         value_of_max_less_25 = self.find_nearest_value(sliced_array, value_of_max_less_25)
         index_of_max_less_25 = np.where(data_in_db == value_of_max_less_25)
-        # plt.plot(self.t[index_of_max_less_25], data_in_db[index_of_max_less_25], 'ro')
+        plt.plot(self.t[index_of_max_less_25], data_in_db[index_of_max_less_25], 'ro')
         rt20 = (self.t[index_of_max_less_5] - self.t[index_of_max_less_25])[0]
         rt60 = rt20*3
-        # plt.show()
+        plt.show()
         print('%.3f' % abs(rt60))
         self.set_file_path('Clap.wav')
         return abs(rt60), self.t, data_in_db, index_of_max, index_of_max_less_5, index_of_max_less_25
-
-
-
-
-
