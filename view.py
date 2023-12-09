@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 
 class View(ttk.Frame):
 	def __init__(self, parent):
@@ -54,7 +53,7 @@ class View(ttk.Frame):
 
 	def next_plot_button_clicked(self):
 		if self.controller:
-			#self.controller.next_plot()
+			self.controller.next_plot()
 			pass
 
 	def set_file_name(self, file_name):
@@ -65,29 +64,3 @@ class View(ttk.Frame):
 		self.audio_length_label['text'] = f'Audio length: {length}s'
 		self.freq_great_amp_label['text'] = f'Frequency of greatest amplitude: {freq_great_amp}Hz'
 		self.rt60_difference_label['text'] = f'RT60 difference: {rt60_diff}s'
-
-	def set_plot(self, plot):
-		#if a canvas has been created previously delete it
-		if self.canvas:
-			self.canvas.delete('all')
-
-		#creating the Tkinter canvas
-		#containing the Matplotlib figure
-		self.canvas = FigureCanvasTkAgg(plot, self)
-		self.canvas.draw()
-
-		#placing the canvas on the Tkinter window
-		#self.canvas.get_tk_widget().pack()
-
-		#placing the canvas on the Tkinter window
-		self.canvas.get_tk_widget().grid(row = 5, column = 0, sticky = tk.W)
-
-		#creating the Matplotlib toolbar
-		toolbar = NavigationToolbar2Tk(self.canvas, self)
-		toolbar.update()
-
-		#placing the toolbar on the Tkinter window
-		#self.canvas.get_tk_widget().pack()
-
-		#placing the canvas on the Tkinter window
-		self.canvas.get_tk_widget().grid(row = 5, column = 0, sticky = tk.W)

@@ -41,20 +41,19 @@ class Controller:
             # Update the GUI in View
             self.view.set_file_name(file_path)
             self.view.set_statistics(length=duration, freq_great_amp=highest_resonance, rt60_diff=0)  # Replace 0 with actual RT60 difference
-            self.view.set_plot(self.model.waveform())  # Display waveform
 
     def next_plot(self):
         Controller.plt_num += 1
         if Controller.plt_num == 1:
-            Model.waveform()
+            self.model.waveform()
         elif Controller.plt_num == 2:
-            Model.low()
+            self.model.low()
         elif Controller.plt_num == 3:
-            Model.mid()
+            self.model.mid()
         elif Controller.plt_num == 4:
-            Model.high()
+            self.model.high()
         elif Controller.plt_num == 5:
-            Model.plot_rt60()
+            self.model.plot_rt60()
         # elif Controller.plt_num == 6:
         #     Model.suprise()
         else:
