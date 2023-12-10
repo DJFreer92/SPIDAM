@@ -14,6 +14,7 @@ class Model:
         # setting the file path of the sound to be analyzed
         self.file_path = sound.export("NewClap.wav", format="wav")
 
+
         # sets variables from L26
         self.sample_rate, self.data = sci.io.wavfile.read(self.file_path)
         self.spectrum, self.freqs, self.t, self.im = plt.specgram(self.data, Fs=self.sample_rate, NFFT=1024,
@@ -25,9 +26,11 @@ class Model:
         if file_path.endswith(".wav"):
             sound = AudioSegment.from_wav(file_path)
             self.set_values(sound)
+            self.set_single_channel()
         elif file_path.endswith(".mp3"):
             sound = AudioSegment.from_mp3(file_path)
             self.set_values(sound)
+            self.set_single_channel()
 
     def set_single_channel(self):
         # simple channel set function
@@ -242,13 +245,3 @@ class Model:
         print('%.3f' % abs(rt60))
         # returns the rt60 time
         return '%.3f' % (abs(rt60) - 0.5)
-
-
-
-
-
-
-
-
-
-
